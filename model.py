@@ -36,7 +36,7 @@ def create_bottleneck_block(x, filters, training, skip_connection=False):
 
 
 def downsample(x, filters, training):
-    h = layers.conv2d(x, filters, kernel_size=3, strides=2, padding="SAME")
+    h = layers.conv2d(x, filters, kernel_size=3, strides=2, activation=None, padding="SAME")
     h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = tf.nn.elu(h)
 
