@@ -43,9 +43,10 @@ def downsample(x, filters, training):
     return h
 
 
-def create_resnet(name, x, training, num_blocks, num_outputs, reuse=False, bottleneck=False):
+def create_resnet(x, training, num_blocks, num_outputs, bottleneck=False, name=None, reuse=False):
     create_block = create_bottleneck_block if bottleneck else create_resnet_block
     unit = 256 if bottleneck else 64
+    name = "ResNET" if name is None else name
 
     with tf.variable_scope(name, reuse=reuse):
         b = layers.conv2d(x, 64, kernel_size=7, strides=2, activation=tf.nn.elu, padding="SAME")
@@ -67,22 +68,22 @@ def create_resnet(name, x, training, num_blocks, num_outputs, reuse=False, bottl
     return fts
 
 
-def create_resnet_18(name, x, training, num_outputs, reuse=False):
-    return create_resnet(name, x, training, [2, 2, 2, 2], num_outputs, reuse)
+def create_resnet_18(x, training, num_outputs, name=None, reuse=False):
+    return create_resnet(x, training, [2, 2, 2, 2], num_outputs, False, name, reuse)
 
 
-def create_resnet_34(name, x, training, num_outputs, reuse=False):
-    return create_resnet(name, x, training, [3, 4, 6, 3], num_outputs, reuse)
+def create_resnet_34(x, training, num_outputs, name=None, reuse=False):
+    return create_resnet(x, training, [3, 4, 6, 3], num_outputs, False, name, reuse)
 
 
-def create_resnet_50(name, x, training, num_outputs, reuse=False):
-    return create_resnet(name, x, training, [3, 4, 6, 3], num_outputs, reuse, bottleneck=True)
+def create_resnet_50(x, training, num_outputs, name=None, reuse=False):
+    return create_resnet(x, training, [3, 4, 6, 3], num_outputs, True, name, reuse)
 
 
-def create_resnet_101(name, x, training, num_outputs, reuse=False):
-    return create_resnet(name, x, training, [3, 4, 23, 3], num_outputs, reuse, bottleneck=True)
+def create_resnet_101(x, training, num_outputs, name=None, reuse=False):
+    return create_resnet(x, training, [3, 4, 23, 3], num_outputs, True, name, reuse)
 
 
-def create_resnet_152(name, x, training, num_outputs, reuse=False):
-    return create_resnet(name, x, training, [3, 8, 36, 3], num_outputs, reuse, bottleneck=True)
+def create_resnet_152(x, training, num_outputs, name=None, reuse=False):
+    return create_resnet(x, training, [3, 8, 36, 3], num_outputs, True, name, reuse)
 
