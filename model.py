@@ -43,7 +43,7 @@ def downsample(x, filters, training, activation=tf.nn.elu):
     return h
 
 
-def create_resnet(x, num_blocks, num_outputs, training, activation=tf.nn.elu, bottleneck=False, name=None, reuse=False):
+def create_resnet(x, num_blocks, num_outputs, training, activation=tf.nn.elu, output_activation=None, bottleneck=False, name=None, reuse=False):
     create_block = create_bottleneck_block if bottleneck else create_resnet_block
     unit = 256 if bottleneck else 64
     name = "ResNET" if name is None else name
@@ -64,35 +64,38 @@ def create_resnet(x, num_blocks, num_outputs, training, activation=tf.nn.elu, bo
         b = layers.conv2d(b, num_outputs, kernel_size=1, activation=None, padding="SAME")
         fts = tf.reduce_mean(b, [1, 2])
 
+        if output_activation is not None:
+            fts = output_activation(fts)
+
     return fts
 
 
-def create_resnet_18(x, num_outputs, training, activation=tf.nn.elu, name=None, reuse=False):
+def create_resnet_18(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-18" if name is None else name
 
-    return create_resnet(x, [2, 2, 2, 2], num_outputs, training, activation, False, name, reuse)
+    return create_resnet(x, [2, 2, 2, 2], num_outputs, training, activation, output_activation, False, name, reuse)
 
 
-def create_resnet_34(x, num_outputs, training, activation=tf.nn.elu, name=None, reuse=False):
+def create_resnet_34(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-34" if name is None else name
 
-    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, False, name, reuse)
+    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, output_activation, False, name, reuse)
 
 
-def create_resnet_50(x, num_outputs, training, activation=tf.nn.elu, name=None, reuse=False):
+def create_resnet_50(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-50" if name is None else name
 
-    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, False, name, reuse)
+    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, output_activation, False, name, reuse)
 
 
-def create_resnet_101(x, num_outputs, training, activation=tf.nn.elu, name=None, reuse=False):
+def create_resnet_101(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-101" if name is None else name
 
-    return create_resnet(x, [3, 4, 23, 3], num_outputs, training, activation, False, name, reuse)
+    return create_resnet(x, [3, 4, 23, 3], num_outputs, training, activation, output_activation, False, name, reuse)
 
 
-def create_resnet_152(x, num_outputs, training, activation=tf.nn.elu, name=None, reuse=False):
+def create_resnet_152(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-152" if name is None else name
 
-    return create_resnet(x, [3, 8, 36, 3], num_outputs, training, activation, False, name, reuse)
+    return create_resnet(x, [3, 8, 36, 3], num_outputs, training, activation, output_activation, False, name, reuse)
 
