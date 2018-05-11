@@ -60,6 +60,9 @@ def create_resnet(x, num_blocks, num_outputs, training, activation=tf.nn.elu, bo
 
             b = downsample(b, unit*2**(i+1), training)
 
+        if num_outputs is None:
+            return b
+
         # use global average pooling
         b = layers.conv2d(b, num_outputs, kernel_size=1, activation=None, padding="SAME")
         fts = tf.reduce_mean(b, [1, 2])
