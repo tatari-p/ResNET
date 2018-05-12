@@ -61,8 +61,7 @@ def create_resnet(name, x, training, num_blocks, num_outputs, reuse=False, bottl
 
         # use global average pooling
         b = layers.conv2d(b, num_outputs, kernel_size=1, activation=None, padding="SAME")
-        b = tf.reduce_mean(b, [1, 2])
-        fts = tf.squeeze(b)
+        fts = tf.reduce_mean(b, [1, 2])
 
     return fts
 
