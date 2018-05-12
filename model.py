@@ -11,7 +11,7 @@ def create_resnet_block(x, filters, training, activation=tf.nn.elu, skip_connect
     if not skip_connection:
         h = h+x
 
-    h = tf.layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
+    h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = activation(h)
 
     return h
