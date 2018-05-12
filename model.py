@@ -85,17 +85,17 @@ def create_resnet_34(x, num_outputs, training, activation=tf.nn.elu, output_acti
 def create_resnet_50(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-50" if name is None else name
 
-    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, output_activation, False, name, reuse)
+    return create_resnet(x, [3, 4, 6, 3], num_outputs, training, activation, output_activation, True, name, reuse)
 
 
 def create_resnet_101(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-101" if name is None else name
 
-    return create_resnet(x, [3, 4, 23, 3], num_outputs, training, activation, output_activation, False, name, reuse)
+    return create_resnet(x, [3, 4, 23, 3], num_outputs, training, activation, output_activation, True, name, reuse)
 
 
 def create_resnet_152(x, num_outputs, training, activation=tf.nn.elu, output_activation=None, name=None, reuse=False):
     name = "ResNET-152" if name is None else name
 
-    return create_resnet(x, [3, 8, 36, 3], num_outputs, training, activation, output_activation, False, name, reuse)
+    return create_resnet(x, [3, 8, 36, 3], num_outputs, training, activation, output_activation, True, name, reuse)
 
