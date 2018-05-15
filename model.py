@@ -1,12 +1,13 @@
 import tensorflow as tf
 from tensorflow import layers
+from tensorflow.contrib.layers import xavier_initializer
 
 
 def create_resnet_block(x, filters, training, activation=tf.nn.elu, skip_connection=False):
-    h = layers.conv2d(x, filters, kernel_size=3, activation=None, padding="SAME", bias_initializer=None)
+    h = layers.conv2d(x, filters, kernel_size=3, activation=None, padding="SAME", kernel_initializer=xavier_initializer(), bias_initializer=None)
     h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = activation(h)
-    h = layers.conv2d(h, filters, kernel_size=3, activation=None, padding="SAME", bias_initializer=None)
+    h = layers.conv2d(h, filters, kernel_size=3, activation=None, padding="SAME", kernel_initializer=xavier_initializer(), bias_initializer=None)
 
     if not skip_connection:
         h = h+x
@@ -18,13 +19,13 @@ def create_resnet_block(x, filters, training, activation=tf.nn.elu, skip_connect
 
 
 def create_bottleneck_block(x, filters, training, activation=tf.nn.elu, skip_connection=False):
-    h = layers.conv2d(x, filters/4, kernel_size=1, activation=None, padding="SAME", bias_initializer=None)
+    h = layers.conv2d(x, filters/4, kernel_size=1, activation=None, padding="SAME", kernel_initializer=xavier_initializer(), bias_initializer=None)
     h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = activation(h)
-    h = layers.conv2d(h, filters/4, kernel_size=3, activation=None, padding="SAME", bias_initializer=None)
+    h = layers.conv2d(h, filters/4, kernel_size=3, activation=None, padding="SAME", kernel_initializer=xavier_initializer(), bias_initializer=None)
     h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = activation(h)
-    h = layers.conv2d(h, filters, kernel_size=1, activation=None, padding="SAME", bias_initializer=None)
+    h = layers.conv2d(h, filters, kernel_size=1, activation=None, padding="SAME", kernel_initializer=xavier_initializer(), bias_initializer=None)
 
     if not skip_connection:
         h = h+x
@@ -36,7 +37,7 @@ def create_bottleneck_block(x, filters, training, activation=tf.nn.elu, skip_con
 
 
 def downsample(x, filters, training, activation=tf.nn.elu):
-    h = layers.conv2d(x, filters, kernel_size=3, strides=2, activation=None, padding="SAME")
+    h = layers.conv2d(x, filters, kernel_size=3, strides=2, activation=None, padding="SAME", kernel_initializer=xavier_initializer())
     h = layers.batch_normalization(h, momentum=0.9, scale=True, fused=True, training=training)
     h = activation(h)
 
@@ -49,7 +50,7 @@ def create_resnet(x, num_blocks, num_outputs, training, activation=tf.nn.elu, ou
     name = "ResNET" if name is None else name
 
     with tf.variable_scope(name, reuse=reuse):
-        b = layers.conv2d(x, 64, kernel_size=7, strides=2, activation=activation, padding="SAME")
+        b = layers.conv2d(x, 64, kernel_size=7, strides=2, activation=activation, padding="SAME", kernel_initializer=xavier_initializer())
         b = layers.max_pooling2d(b, pool_size=3, strides=2, padding="SAME")
 
         for i, num_repeats in enumerate(num_blocks):
